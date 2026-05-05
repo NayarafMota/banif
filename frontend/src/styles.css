@@ -1,0 +1,161 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f2f5fb;
+  color: #111827;
+}
+
+.app-container {
+  min-height: 100vh;
+  display: flex;
+  background: linear-gradient(135deg, #0f172a, #1d4ed8);
+}
+
+.sidebar {
+  width: 260px;
+  padding: 32px 22px;
+  background: #0f172a;
+  color: white;
+}
+
+.sidebar h1 {
+  font-size: 34px;
+  margin: 0;
+  letter-spacing: 1px;
+}
+
+.sidebar p {
+  margin: 6px 0 30px;
+  color: #bfdbfe;
+}
+
+.sidebar button {
+  width: 100%;
+  border: none;
+  background: transparent;
+  color: white;
+  padding: 14px 16px;
+  margin-bottom: 8px;
+  border-radius: 14px;
+  text-align: left;
+  font-size: 15px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.sidebar button:hover {
+  background: #1d4ed8;
+  transform: translateX(4px);
+}
+
+.content {
+  flex: 1;
+  padding: 40px;
+  background: #f8fafc;
+  border-top-left-radius: 36px;
+  border-bottom-left-radius: 36px;
+}
+
+.card {
+  background: white;
+  max-width: 720px;
+  padding: 32px;
+  border-radius: 28px;
+  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.12);
+  animation: fadeIn 0.25s ease;
+}
+
+.card h2 {
+  margin-top: 0;
+  color: #1d4ed8;
+  font-size: 26px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+input,
+select {
+  border: none;
+  background: #f1f5f9;
+  padding: 15px;
+  border-radius: 14px;
+  font-size: 15px;
+  outline: none;
+}
+
+input:focus,
+select:focus {
+  box-shadow: 0 0 0 2px #2563eb;
+  background: white;
+}
+
+.primary-btn {
+  border: none;
+  background: #2563eb;
+  color: white;
+  padding: 15px;
+  border-radius: 16px;
+  font-weight: bold;
+  font-size: 15px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.primary-btn:hover {
+  background: #1e40af;
+  transform: translateY(-2px);
+}
+
+.list {
+  list-style: none;
+  padding: 0;
+}
+
+.list li {
+  background: #f1f5f9;
+  padding: 16px;
+  border-radius: 16px;
+  margin-bottom: 12px;
+  border-left: 6px solid #2563eb;
+}
+
+.login-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0f172a, #2563eb);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.login-card {
+  width: 340px;
+  background: white;
+  padding: 34px;
+  border-radius: 30px;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.25);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.login-card h2 {
+  color: #1d4ed8;
+  font-size: 32px;
+  margin: 0 0 10px;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
