@@ -2,9 +2,10 @@ import { useState } from 'react'
 import api from '../api'
 import '../styles.css'
 
-export default function DashboardCliente() {
+export default function DashboardCliente({ user }) {
   const [aba, setAba] = useState('saldo')
   const [saldo, setSaldo] = useState('')
+  const [contaCliente, setContaCliente] = useState(null)
   const [extrato, setExtrato] = useState([])
 
   const [pix, setPix] = useState({
@@ -24,11 +25,10 @@ export default function DashboardCliente() {
 
   async function verSaldo() {
     try {
-      const contaId = prompt('Digite o ID da sua conta:')
-      if (!contaId) return
+      const res = await api.get(`/clientes/${user.id}/saldo`)
 
-      const res = await api.get(`/contas/${contaId}`)
-      setSaldo(res.data.saldo ?? res.data)
+      setSaldo(res.data.saldo)
+      setContaCliente(res.data.conta)
     } catch (error) {
       mostrarErro(error, 'Erro ao buscar saldo')
     }
@@ -66,10 +66,7 @@ export default function DashboardCliente() {
 
   async function gerarExtrato() {
     try {
-      const contaId = prompt('Digite o ID da sua conta:')
-      if (!contaId) return
-
-      const res = await api.get(`/extrato/${contaId}`)
+      const res = await api.get(`/clientes/${user.id}/extrato`)
       setExtrato(res.data)
     } catch (error) {
       mostrarErro(error, 'Erro ao gerar extrato')
@@ -81,6 +78,7 @@ export default function DashboardCliente() {
       <aside className="sidebar">
         <h1>BANIF</h1>
         <p>Área do Cliente</p>
+        <p>{user.nome}</p>
 
         <button onClick={() => setAba('saldo')}>Saldo</button>
         <button onClick={() => setAba('pix')}>Pix</button>
@@ -92,7 +90,18 @@ export default function DashboardCliente() {
         {aba === 'saldo' && (
           <div className="card">
             <h2>Saldo</h2>
-            <button className="primary-btn" onClick={verSaldo}>Ver Saldo</button>
+
+            <button className="primary-btn" onClick={verSaldo}>
+              Ver Saldo
+            </button>
+
+            {contaCliente && (
+              <div style={{ marginTop: 15 }}>
+                <p><strong>Agência:</strong> {contaCliente.agencia}</p>
+                <p><strong>Conta:</strong> {contaCliente.numeroConta}</p>
+              </div>
+            )}
+
             <h3>R$ {saldo || '0,00'}</h3>
           </div>
         )}
@@ -101,11 +110,27 @@ export default function DashboardCliente() {
           <div className="card form">
             <h2>Transferência Pix</h2>
 
-            <input placeholder="Conta origem" value={pix.contaOrigemId} onChange={e => setPix({ ...pix, contaOrigemId: e.target.value })} />
-            <input placeholder="Conta destino" value={pix.contaDestinoId} onChange={e => setPix({ ...pix, contaDestinoId: e.target.value })} />
-            <input placeholder="Valor" value={pix.valor} onChange={e => setPix({ ...pix, valor: e.target.value })} />
+            <input
+              placeholder="Conta origem"
+              value={pix.contaOrigemId}
+              onChange={e => setPix({ ...pix, contaOrigemId: e.target.value })}
+            />
 
-            <button className="primary-btn" onClick={fazerPix}>Transferir</button>
+            <input
+              placeholder="Conta destino"
+              value={pix.contaDestinoId}
+              onChange={e => setPix({ ...pix, contaDestinoId: e.target.value })}
+            />
+
+            <input
+              placeholder="Valor"
+              value={pix.valor}
+              onChange={e => setPix({ ...pix, valor: e.target.value })}
+            />
+
+            <button className="primary-btn" onClick={fazerPix}>
+              Transferir
+            </button>
           </div>
         )}
 
@@ -113,21 +138,37 @@ export default function DashboardCliente() {
           <div className="card form">
             <h2>Aplicar Poupança</h2>
 
-            <input placeholder="Conta" value={aplicacao.contaId} onChange={e => setAplicacao({ ...aplicacao, contaId: e.target.value })} />
-            <input placeholder="Valor" value={aplicacao.valor} onChange={e => setAplicacao({ ...aplicacao, valor: e.target.value })} />
+            <input
+              placeholder="Conta"
+              value={aplicacao.contaId}
+              onChange={e => setAplicacao({ ...aplicacao, contaId: e.target.value })}
+            />
 
-            <button className="primary-btn" onClick={aplicarPoupanca}>Aplicar</button>
+            <input
+              placeholder="Valor"
+              value={aplicacao.valor}
+              onChange={e => setAplicacao({ ...aplicacao, valor: e.target.value })}
+            />
+
+            <button className="primary-btn" onClick={aplicarPoupanca}>
+              Aplicar
+            </button>
           </div>
         )}
 
         {aba === 'extrato' && (
           <div className="card">
             <h2>Extrato</h2>
-            <button className="primary-btn" onClick={gerarExtrato}>Gerar Extrato</button>
+
+            <button className="primary-btn" onClick={gerarExtrato}>
+              Gerar Extrato
+            </button>
 
             <ul className="list">
               {extrato.map((item, i) => (
-                <li key={i}>{item.tipo} - {item.valor}</li>
+                <li key={i}>
+                  {item.tipo} - {item.valor}
+                </li>
               ))}
             </ul>
           </div>

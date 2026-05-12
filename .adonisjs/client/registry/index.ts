@@ -24,17 +24,17 @@ const routes = {
     tokens: [{"old":"/clientes","type":0,"val":"clientes","end":""}],
     types: placeholder as Registry['cliente.index']['types'],
   },
-  'conta.store': {
-    methods: ["POST"],
-    pattern: '/contas',
-    tokens: [{"old":"/contas","type":0,"val":"contas","end":""}],
-    types: placeholder as Registry['conta.store']['types'],
-  },
   'conta.show': {
     methods: ["GET","HEAD"],
     pattern: '/contas/:id',
     tokens: [{"old":"/contas/:id","type":0,"val":"contas","end":""},{"old":"/contas/:id","type":1,"val":"id","end":""}],
     types: placeholder as Registry['conta.show']['types'],
+  },
+  'conta.saldo_por_cliente': {
+    methods: ["GET","HEAD"],
+    pattern: '/clientes/:clienteId/saldo',
+    tokens: [{"old":"/clientes/:clienteId/saldo","type":0,"val":"clientes","end":""},{"old":"/clientes/:clienteId/saldo","type":1,"val":"clienteId","end":""},{"old":"/clientes/:clienteId/saldo","type":0,"val":"saldo","end":""}],
+    types: placeholder as Registry['conta.saldo_por_cliente']['types'],
   },
   'transacaos.store': {
     methods: ["POST"],
@@ -47,6 +47,12 @@ const routes = {
     pattern: '/extrato/:id',
     tokens: [{"old":"/extrato/:id","type":0,"val":"extrato","end":""},{"old":"/extrato/:id","type":1,"val":"id","end":""}],
     types: placeholder as Registry['extrato.index']['types'],
+  },
+  'extrato.por_cliente': {
+    methods: ["GET","HEAD"],
+    pattern: '/clientes/:clienteId/extrato',
+    tokens: [{"old":"/clientes/:clienteId/extrato","type":0,"val":"clientes","end":""},{"old":"/clientes/:clienteId/extrato","type":1,"val":"clienteId","end":""},{"old":"/clientes/:clienteId/extrato","type":0,"val":"extrato","end":""}],
+    types: placeholder as Registry['extrato.por_cliente']['types'],
   },
   'investimento.store': {
     methods: ["POST"],

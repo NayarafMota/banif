@@ -11,8 +11,8 @@ export default function App() {
   }
 
   if (user.permissao === 'gerente') {
-    return <DashboardGerente />
+    return <DashboardGerente user={user} />
   }
 
-  return <DashboardCliente />
+  return <DashboardCliente user={user} />
 }

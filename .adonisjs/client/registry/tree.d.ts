@@ -10,14 +10,15 @@ export interface ApiDefinition {
     index: typeof routes['cliente.index']
   }
   conta: {
-    store: typeof routes['conta.store']
     show: typeof routes['conta.show']
+    saldoPorCliente: typeof routes['conta.saldo_por_cliente']
   }
   transacaos: {
     store: typeof routes['transacaos.store']
   }
   extrato: {
     index: typeof routes['extrato.index']
+    porCliente: typeof routes['extrato.por_cliente']
   }
   investimento: {
     store: typeof routes['investimento.store']

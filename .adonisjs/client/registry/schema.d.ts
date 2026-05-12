@@ -43,18 +43,6 @@ export interface Registry {
       errorResponse: unknown
     }
   }
-  'conta.store': {
-    methods: ["POST"]
-    pattern: '/contas'
-    types: {
-      body: {}
-      paramsTuple: []
-      params: {}
-      query: {}
-      response: unknown
-      errorResponse: unknown
-    }
-  }
   'conta.show': {
     methods: ["GET","HEAD"]
     pattern: '/contas/:id'
@@ -62,6 +50,18 @@ export interface Registry {
       body: {}
       paramsTuple: [ParamValue]
       params: { id: ParamValue }
+      query: {}
+      response: unknown
+      errorResponse: unknown
+    }
+  }
+  'conta.saldo_por_cliente': {
+    methods: ["GET","HEAD"]
+    pattern: '/clientes/:clienteId/saldo'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue]
+      params: { clienteId: ParamValue }
       query: {}
       response: unknown
       errorResponse: unknown
@@ -86,6 +86,18 @@ export interface Registry {
       body: {}
       paramsTuple: [ParamValue]
       params: { id: ParamValue }
+      query: {}
+      response: unknown
+      errorResponse: unknown
+    }
+  }
+  'extrato.por_cliente': {
+    methods: ["GET","HEAD"]
+    pattern: '/clientes/:clienteId/extrato'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue]
+      params: { clienteId: ParamValue }
       query: {}
       response: unknown
       errorResponse: unknown

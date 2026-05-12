@@ -18,13 +18,6 @@ export default function DashboardGerente() {
     permissao: 'cliente',
   })
 
-  const [conta, setConta] = useState({
-    numeroConta: '',
-    agencia: '',
-    saldo: 0,
-    clienteId: '',
-  })
-
   const [pix, setPix] = useState({
     contaOrigemId: '',
     contaDestinoId: '',
@@ -38,11 +31,25 @@ export default function DashboardGerente() {
   })
 
   useEffect(() => {
-    listarClientes()
-  }, [])
+  listarClientes()
 
+  
+}, [])
   function mostrarErro(error, msg) {
     alert(error.response?.data?.message || msg)
+  }
+
+  function formatarTipo(tipo) {
+    switch (tipo) {
+      case 'poupanca':
+        return 'Poupança'
+      case 'titulos_governo':
+        return 'Títulos do Governo'
+      case 'acoes':
+        return 'Ações'
+      default:
+        return tipo
+    }
   }
 
   async function listarClientes() {
@@ -56,8 +63,9 @@ export default function DashboardGerente() {
 
   async function cadastrarCliente() {
     try {
-      await api.post('/clientes', cliente)
-      alert('Cliente cadastrado com sucesso!')
+      const res = await api.post('/clientes', cliente)
+
+      alert(res.data?.message || 'Cliente cadastrado e conta criada com sucesso!')
 
       setCliente({
         nome: '',
@@ -75,32 +83,6 @@ export default function DashboardGerente() {
       setAba('clientes')
     } catch (error) {
       mostrarErro(error, 'Erro ao cadastrar cliente')
-    }
-  }
-
-  async function criarConta() {
-    try {
-      if (!conta.clienteId) {
-        alert('Selecione um cliente')
-        return
-      }
-
-      await api.post('/contas', {
-        numeroConta: conta.numeroConta,
-        agencia: conta.agencia,
-        saldo: Number(conta.saldo),
-        clienteId: Number(conta.clienteId),
-      })
-
-      alert('Conta criada com sucesso!')
-      setConta({
-        numeroConta: '',
-        agencia: '',
-        saldo: 0,
-        clienteId: '',
-      })
-    } catch (error) {
-      mostrarErro(error, 'Erro ao criar conta')
     }
   }
 
@@ -153,18 +135,6 @@ export default function DashboardGerente() {
     setAplicacao({ contaId: '', tipo, valor: '' })
     setAba('aplicacao')
   }
-  function formatarTipo(tipo) {
-  switch (tipo) {
-    case 'poupanca':
-      return 'Poupança'
-    case 'titulos_governo':
-      return 'Títulos do Governo'
-    case 'acoes':
-      return 'Ações'
-    default:
-      return tipo
-  }
-}
 
   return (
     <div className="app-container">
@@ -173,7 +143,6 @@ export default function DashboardGerente() {
         <p>Área do Gerente</p>
 
         <button onClick={() => setAba('cadastro')}>Cadastrar Cliente</button>
-        <button onClick={() => setAba('conta')}>Criar Conta</button>
         <button onClick={() => { listarClientes(); setAba('clientes') }}>Clientes</button>
         <button onClick={() => setAba('pix')}>Pix</button>
         <button onClick={() => abrirAplicacao('poupanca')}>Poupança</button>
@@ -204,25 +173,6 @@ export default function DashboardGerente() {
           </div>
         )}
 
-        {aba === 'conta' && (
-          <div className="card form">
-            <h2>Criar Conta Corrente</h2>
-
-            <input value={conta.numeroConta} placeholder="Número da conta" onChange={e => setConta({ ...conta, numeroConta: e.target.value })} />
-            <input value={conta.agencia} placeholder="Agência" onChange={e => setConta({ ...conta, agencia: e.target.value })} />
-            <input value={conta.saldo} placeholder="Saldo inicial" type="number" onChange={e => setConta({ ...conta, saldo: e.target.value })} />
-
-            <select value={conta.clienteId} onChange={e => setConta({ ...conta, clienteId: e.target.value })}>
-              <option value="">Selecione o cliente</option>
-              {clientes.map(c => (
-                <option key={c.id} value={c.id}>{c.id} - {c.nome}</option>
-              ))}
-            </select>
-
-            <button className="primary-btn" onClick={criarConta}>Salvar Conta</button>
-          </div>
-        )}
-
         {aba === 'pix' && (
           <div className="card form">
             <h2>Transferência Pix</h2>
@@ -239,9 +189,10 @@ export default function DashboardGerente() {
           <div className="card form">
             <h2>Aplicação Financeira</h2>
 
-           <p style={{ fontWeight: 'bold', color: '#2563eb' }}>
-  Tipo: {formatarTipo(aplicacao.tipo)}
-</p>
+            <p style={{ fontWeight: 'bold', color: '#2563eb' }}>
+              Tipo: {formatarTipo(aplicacao.tipo)}
+            </p>
+
             <input placeholder="ID da conta" type="number" value={aplicacao.contaId} onChange={e => setAplicacao({ ...aplicacao, contaId: e.target.value })} />
             <input placeholder="Valor" type="number" value={aplicacao.valor} onChange={e => setAplicacao({ ...aplicacao, valor: e.target.value })} />
 
